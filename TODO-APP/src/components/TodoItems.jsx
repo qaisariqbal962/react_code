@@ -1,22 +1,93 @@
-import React from "react";
+import React, { useState } from "react";
 import tick from "../assets/tick.png";
 import not_tick from "../assets/not_tick.png";
 import delete_icon from "../assets/delete.png";
+import edit_icon from "../assets/edit.png";
 
-const TodoItems = ({ text, id, isComplete, deleteTodo }) => {
+const TodoItems = ({ text, id, isComplete, deleteTodo, toggle, editTodo }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [newText, setNewText] = useState(text);
+
+  const handleSave = () => {
+    if (newText.trim() !== "") {
+      editTodo(id, newText.trim());
+      setIsEditing(false);
+    }
+  };
+
+  const handleCancel = () => {
+    setNewText(text);
+    setIsEditing(false);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleSave();
+    } else if (e.key === "Escape") {
+      handleCancel();
+    }
+  };
+
   return (
-    <div className="flex items-center my-3 gap-2">
-      <div className="flex flex-1 items-center cursor-pointer">
-        <img src={tick} alt="" className="w-7" />
-        <p className="text-slate-700 ml-4 text[17px]">{text}</p>
+    <div className="flex items-center my-3 gap-2 bg-gray-100 p-3 rounded-lg">
+      {/* Toggle + Text / Input */}
+      <div
+        onClick={() => !isEditing && toggle(id)}
+        className="flex flex-1 items-center cursor-pointer"
+      >
+        <img src={isComplete ? tick : not_tick} alt="" className="w-7" />
+
+        {isEditing ? (
+          <input
+            type="text"
+            value={newText}
+            onChange={(e) => setNewText(e.target.value)}
+            onKeyDown={handleKeyDown}
+            className="ml-4 px-2 py-1 border rounded w-full outline-none"
+            autoFocus
+          />
+        ) : (
+          <p
+            className={`text-slate-700 ml-4 text-[17px] ${
+              isComplete ? "line-through" : ""
+            }`}
+          >
+            {text}
+          </p>
+        )}
       </div>
+
+      {/* Edit / Save + Cancel */}
+      {isEditing ? (
+        <>
+          <button
+            onClick={handleSave}
+            className="bg-red-400 text-white px-2 py-1 rounded text-sm mr-2"
+          >
+            Save
+          </button>
+          <button
+            onClick={handleCancel}
+            className="bg-gray-400 text-white px-2 py-1 rounded text-sm mr-2"
+          >
+            Cancel
+          </button>
+        </>
+      ) : (
+        <img
+          onClick={() => setIsEditing(true)}
+          src={edit_icon}
+          alt="edit"
+          className="w-4 cursor-pointer mr-2"
+        />
+      )}
+
+      {/* Delete */}
       <img
-        onClick={() => {
-          deleteTodo(id);
-        }}
+        onClick={() => deleteTodo(id)}
         src={delete_icon}
-        alt=""
-        className="w-3.5 cursor-pointer"
+        alt="delete"
+        className="w-4 cursor-pointer"
       />
     </div>
   );
