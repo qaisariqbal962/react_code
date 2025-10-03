@@ -86,9 +86,7 @@ const TodoItems = ({ text, id, isComplete, deleteTodo, toggle, editTodo }) => {
       {/* ----Delete / Confirm----- */}
       {confirmDelete ? (
         <div className="flex items-center gap-2">
-          <span className="text-sm text-slate-700">
-            Are you sure to delete this?
-          </span>
+          <span className="text-sm text-slate-700">Are you sure ?</span>
           <button
             onClick={() => deleteTodo(id)}
             className="bg-red-600 text-white px-2 py-1 rounded text-xs"
