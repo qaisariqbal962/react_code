@@ -1,6 +1,5 @@
 import axios from "axios";
 
-// Create axios instance with base URL
 const api = axios.create({
   baseURL: "http://localhost:5000",
   headers: {
@@ -8,7 +7,6 @@ const api = axios.create({
   },
 });
 
-// API service functions
 export const todoAPI = {
   // Get all todos
   getAllTodos: async () => {

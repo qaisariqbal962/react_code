@@ -113,7 +113,6 @@ const Todo = () => {
     })();
   }, []);
 
-  // Persist theme only; we no longer rely on the global 'dark' class
   useEffect(() => {
     localStorage.setItem("theme", darkMode ? "dark" : "light");
   }, [darkMode]);
