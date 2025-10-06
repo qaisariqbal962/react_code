@@ -4,7 +4,15 @@ import not_tick from "../assets/not_tick.png";
 import delete_icon from "../assets/delete.png";
 import edit_icon from "../assets/edit.png";
 
-const TodoItems = ({ text, id, isComplete, deleteTodo, toggle, editTodo }) => {
+const TodoItems = ({
+  text,
+  id,
+  isComplete,
+  deleteTodo,
+  toggle,
+  editTodo,
+  isPending,
+}) => {
   const [isEditing, setIsEditing] = useState(false);
   const [newText, setNewText] = useState(text);
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -33,8 +41,10 @@ const TodoItems = ({ text, id, isComplete, deleteTodo, toggle, editTodo }) => {
     <div className="flex items-center my-3 gap-2 bg-gray-100 p-3 rounded-lg">
       {/* ----Toggle Text Input---- */}
       <div
-        onClick={() => !isEditing && toggle(id)}
-        className="flex flex-1 items-center cursor-pointer"
+        onClick={() => !isEditing && !isPending && toggle(id)}
+        className={`flex flex-1 items-center ${
+          isPending ? "cursor-not-allowed opacity-60" : "cursor-pointer"
+        }`}
       >
         <img src={isComplete ? tick : not_tick} alt="" className="w-7" />
 
@@ -76,10 +86,12 @@ const TodoItems = ({ text, id, isComplete, deleteTodo, toggle, editTodo }) => {
         </>
       ) : (
         <img
-          onClick={() => setIsEditing(true)}
+          onClick={() => !isPending && setIsEditing(true)}
           src={edit_icon}
           alt="edit"
-          className="w-4 cursor-pointer mr-2"
+          className={`w-4 mr-2 ${
+            isPending ? "opacity-60 cursor-not-allowed" : "cursor-pointer"
+          }`}
         />
       )}
 
@@ -102,10 +114,12 @@ const TodoItems = ({ text, id, isComplete, deleteTodo, toggle, editTodo }) => {
         </div>
       ) : (
         <img
-          onClick={() => setConfirmDelete(true)}
+          onClick={() => !isPending && setConfirmDelete(true)}
           src={delete_icon}
           alt="delete"
-          className="w-4 cursor-pointer"
+          className={`w-4 ${
+            isPending ? "opacity-60 cursor-not-allowed" : "cursor-pointer"
+          }`}
         />
       )}
     </div>
