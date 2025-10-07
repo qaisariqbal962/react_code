@@ -39,7 +39,7 @@ const Todo = () => {
       setTodoList((prev) =>
         prev.filter((t) => !String(t.id).startsWith("temp-"))
       );
-      setError("Failed to create todo");
+      setError("Failed to create todo")  ;
     }
   };
 
